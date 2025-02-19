@@ -83,17 +83,37 @@ def _quadratic_multiply(x, y):
     ###
 
 
+def multiply(x,y):
+    return x*y
     
-    
-def test_quadratic_multiply(x, y, f):
+def  time_quadratic_multiply(x, y, f):
     start = time.time()
     # multiply two numbers x, y using function f
     f(x,y)
     return (time.time() - start)*1000
-pass
 
-print(test_quadratic_multiply(10000,1000000,quadratic_multiply))
 
+import time
+
+# Iterate over powers of 10 for x and y
+powers = [10**i for i in range(1, 7)]  # Adjust range as needed
+
+# Print table header
+print(f"{'x':<10}{'y':<10}{'Quadratic Time (ms)':<20}{'Multiply Time (ms)':<20}")
+
+for x in powers:
+    for y in powers:
+        quad_time = time_quadratic_multiply(x, y, quadratic_multiply)
+        mult_time = time_quadratic_multiply(x, y, multiply)
+        print(f"{x:<10}{y:<10}{quad_time:<20.6f}{mult_time:<20.6f}")
+
+
+
+# x         y         Quadratic Time (ms) Multiply Time (ms)
+# 10        10        0.056028            0.000000
+# 10        100       0.236034            0.001192
+# 10        1000      0.165224            0.000954
+# the quadratic function seems to have a O(lgn) run time and the multiply function seems to run much faster
 
 
     
