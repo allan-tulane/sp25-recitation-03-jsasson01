@@ -46,10 +46,39 @@ def pad(x,y):
 
 def quadratic_multiply(x, y):
     # this just converts the result from a BinaryNumber to a regular int
-    return _quadratic_multiply(x,y).decimal_val
+    return _quadratic_multiply(x,y)
 
 def _quadratic_multiply(x, y):
-    ### TODO
+    if isinstance(x,BinaryNumber) ==False :
+        x = BinaryNumber(x)
+    if isinstance(y, BinaryNumber) == False:
+        y = BinaryNumber(y)
+    x.binary_vec,y.binary_vec = pad(x.binary_vec,y.binary_vec)
+    n = len(x.binary_vec)
+    # print("n=",n)
+
+    if x.decimal_val <=1 and y.decimal_val<= 1:
+        return x.decimal_val * y.decimal_val
+    else:
+        x_tuple = split_number(x.binary_vec)
+        y_tuple = split_number(y.binary_vec)
+        x_left = x_tuple[0]
+        x_right = x_tuple[1]
+        y_left = y_tuple[0]
+        y_right = y_tuple[1]
+        # print(x.binary_vec, y.binary_vec, x_left, x_right, y_left, y_right)
+        first_before_shift = BinaryNumber(_quadratic_multiply(x_left, y_left))
+        first =(bit_shift(first_before_shift, n)).decimal_val
+        second_before_shift = BinaryNumber(_quadratic_multiply(x_left, y_right)+_quadratic_multiply(x_right, y_left))
+        second= (bit_shift(second_before_shift, n // 2)).decimal_val
+        third = _quadratic_multiply(x_right,y_right)
+        # print(first_before_shift, first, n)
+        # print(second_before_shift, second, n//2)
+        # print(second)
+        # print(third)
+    return  first + second + third
+
+
     pass
     ###
 
@@ -59,8 +88,12 @@ def _quadratic_multiply(x, y):
 def test_quadratic_multiply(x, y, f):
     start = time.time()
     # multiply two numbers x, y using function f
-    
+    f(x,y)
     return (time.time() - start)*1000
+pass
+
+print(test_quadratic_multiply(10000,1000000,quadratic_multiply))
+
 
 
     
